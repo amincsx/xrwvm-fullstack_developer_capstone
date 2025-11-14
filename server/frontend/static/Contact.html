@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+
+    <style>
+        body {
+            background: #eef2f6;
+            font-family: Arial, sans-serif;
+        }
+
+        .contact-container {
+            width: 70%;
+            margin: 3rem auto;
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #0d6efd;
+        }
+
+        .contact-details {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            padding: 1rem 2rem;
+        }
+
+        .contact-details p {
+            margin: 0.5rem 0;
+        }
+
+        .map-box {
+            margin-top: 2rem;
+            width: 100%;
+            height: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color:darkturquoise; height: 1in;">
+        <div class="container-fluid">
+            <h2 style="padding-right: 5%;">Dealerships</h2>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarText" aria-controls="navbarText"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                    <li class="nav-item">
+                        <a class="nav-link" style="font-size: larger;" href="/">Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" style="font-size: larger;" href="/about">About Us</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active" style="font-size: larger;" href="/contact">Contact Us</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="contact-container">
+        <h1>Contact Us</h1>
+
+        <div class="contact-details">
+            <p><strong>Dealership Name:</strong> Amin CSX Cars</p>
+            <p><strong>Address:</strong> 1520 Westlake Avenue, Suite 210, Seattle, WA 98109</p>
+            <p><strong>Email:</strong> support@csxcars.com</p>
+            <p><strong>Phone:</strong> +1 (425) 555-9281</p>
+            <p><strong>Business Hours:</strong> Mon–Sat: 9:00 AM – 7:00 PM</p>
+            <p><strong>Emergency Support:</strong> +1 (425) 555-4411</p>
+        </div>
+
+        <div class="map-box">
+            <!-- Placeholder map -->
+            <iframe
+                width="100%"
+                height="100%"
+                frameborder="0"
+                style="border:0"
+                src="https://maps.google.com/maps?q=seattle&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+
+</body>
+</html>

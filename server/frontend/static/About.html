@@ -1,68 +1,147 @@
-<html>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <!-- Link the style sheet here -->
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            background: #f3f6fa;
+            font-family: Arial, sans-serif;
+        }
+
+        .banner {
+            padding: 2rem;
+            background: linear-gradient(135deg, #0d6efd, #3cb7d6);
+            color: white;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .team-section {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 1rem;
+        }
+
+        .team-card {
+            width: 30%;
+            min-width: 260px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.12);
+            overflow: hidden;
+            transition: transform .2s ease;
+        }
+
+        .team-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .team-card img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+        }
+
+        .team-card .card-body {
+            padding: 1rem 1.2rem;
+            text-align: center;
+        }
+
+        .team-card .title {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+    </style>
 </head>
-<div>
-  <nav class="navbar navbar-expand-lg navbar-light" style="background-color:darkturquoise; height: 1in;">
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color:darkturquoise; height: 1in;">
     <div class="container-fluid">
-      <h2 style="padding-right: 5%;">Dealerships</h2>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarText">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" style="font-size: larger;" aria-current="page" href="/">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" style="font-size: larger;" href="/about">About Us</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" style="font-size: larger;" href="/contact">Contact Us</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-  
-    <div class="card" style="width: 80%;margin: auto; margin-top:5%;">
-      <div class="banner" name="about-header">
-      <!-- Insert header information here -->
-      </div>
-      <div style="display: flex;flex-direction: row; margin:auto">
-      <div class="card" style="width: 30%;">
-        <img class="card-img-top" src="/static/person.png" alt="Card image">
-        <div class="card-body">
-          <p class="title">Person1</p>
-          <p>Person1 Title</p>
-          <p class="card-text">Some text that explains the person1 in about 2 short sentences</p>
-          <p>person1@example.com</p>
-        </div>
-      </div>
+        <h2 style="padding-right: 5%;">Dealerships</h2>
 
-      <div class="card" style="width: 30%;">
-        <img class="card-img-top" src="/static/person.png" alt="Card image">
-        <div class="card-body">
-          <p class="title">Person2</p>
-          <p>Person2 Title</p>
-          <p class="card-text">Some text that explains the person2 in about 2 short sentences</p>
-          <p>person2@example.com</p>
-        </div>
-      </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarText" aria-controls="navbarText"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-      <div class="card" style="width: 30%;">
-        <img class="card-img-top" src="/static/person.png" alt="Card image">
-        <div class="card-body">
-          <p class="title">Person3</p>
-          <p>Person3 Title</p>
-          <p class="card-text">Some text that explains the person3 in about 2 short sentences</p>
-          <p>person3@example.com</p>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                <li class="nav-item">
+                    <a class="nav-link" style="font-size: larger;" aria-current="page" href="/">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active" style="font-size: larger;" href="/about">About Us</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" style="font-size: larger;" href="/contact">Contact Us</a>
+                </li>
+
+            </ul>
         </div>
-      </div>
     </div>
+</nav>
+
+
+<div class="card" style="width: 85%; margin: auto; margin-top: 3%;">
+    <div class="banner">
+        <h1>About Us</h1>
+        <p>
+            At Amin CSX Cars, we take pride in offering a premium selection of high-quality vehicles,
+            both domestic and imported. Our mission is simple — to help customers find reliable cars at fair,
+            transparent prices while delivering exceptional service at every step.
+        </p>
     </div>
+
+    <div class="team-section">
+
+        <!-- Person 1 -->
+        <div class="team-card">
+            <img src="{% static 'photo_2025-10-11_11-50-55.jpg' %}" alt="CEO">
+            <div class="card-body">
+                <p class="title">Amin csx</p>
+                <p>Founder & CEO</p>
+                <p>Amin leads the dealership with a passion for automotive excellence, ensuring customers always receive honest guidance and top-tier service.</p>
+                <p>amin@csxcars.com</p>
+            </div>
+        </div>
+
+        <!-- Person 2 -->
+        <div class="team-card">
+            <img src="{% static 'photo_2025-10-11_11-50-55.jpg' %}" alt="Sales Director">
+            <div class="card-body">
+                <p class="title">Sara Mitchell</p>
+                <p>Sales Director</p>
+                <p>Sara helps customers find the perfect vehicle by combining expert knowledge with a welcoming, personalized approach.</p>
+                <p>sara@csxcars.com</p>
+            </div>
+        </div>
+
+        <!-- Person 3 -->
+        <div class="team-card">
+            <img src="{% static 'photo_2025-10-11_11-50-55.jpg' %}" alt="Service Manager">
+            <div class="card-body">
+                <p class="title">Jason Cole</p>
+                <p>Service Manager</p>
+                <p>Jason ensures every car is maintained to the highest standard before it reaches the customer, backed by years of technical experience.</p>
+                <p>jason@csxcars.com</p>
+            </div>
+        </div>
+
     </div>
-    
 </div>
 
+</body>
 </html>
