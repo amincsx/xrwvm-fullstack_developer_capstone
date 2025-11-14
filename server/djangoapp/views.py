@@ -8,20 +8,16 @@ from django.views.decorators.csrf import csrf_exempt
 import logging
 import json
 from .populate import initiate
+from .models import CarMake, CarModel  # <-- Added for Car models
 
 # Logger setup
 logger = logging.getLogger(__name__)
-
 
 # ===========================
 # LOGIN VIEW
 # ===========================
 @csrf_exempt
 def login_user(request):
-    """
-    Handle POST login request.
-    Returns JSON with username and authentication status.
-    """
     if request.method == "POST":
         try:
             data = json.loads(request.body)
@@ -53,10 +49,6 @@ def login_user(request):
 # ===========================
 @csrf_exempt
 def logout_request(request):
-    """
-    Handle POST logout request.
-    Terminates the session and returns JSON with empty username.
-    """
     if request.method == "POST":
         try:
             logout(request)
@@ -74,10 +66,6 @@ def logout_request(request):
 # ===========================
 @csrf_exempt
 def registration(request):
-    """
-    Handle POST registration request.
-    Creates a new user, logs them in, and returns JSON with username and status.
-    """
     if request.method == "POST":
         try:
             data = json.loads(request.body)
@@ -103,7 +91,6 @@ def registration(request):
             # Log in the newly created user
             login(request, user)
 
-            # Return success JSON
             return JsonResponse({"userName": username, "status": "Authenticated"})
 
         except json.JSONDecodeError:
@@ -116,22 +103,40 @@ def registration(request):
 
 
 # ===========================
+# GET CARS VIEW
+# ===========================
+def get_cars(request):
+    """
+    Returns a JSON list of all car models along with their makes.
+    If no CarMake exists, populate the database using initiate().
+    """
+    count = CarMake.objects.count()
+    if count == 0:
+        initiate()
+
+    car_models = CarModel.objects.select_related('car_make')
+    cars = []
+
+    for car_model in car_models:
+        cars.append({
+            "CarModel": car_model.name,
+            "CarMake": car_model.car_make.name
+        })
+
+    return JsonResponse({"CarModels": cars})
+
+
+# ===========================
 # PLACEHOLDER VIEWS
 # ===========================
-# Example placeholders you can implement later
-
-# Get dealerships
 # def get_dealerships(request):
 #     ...
 
-# Get dealer reviews
 # def get_dealer_reviews(request, dealer_id):
 #     ...
 
-# Get dealer details
 # def get_dealer_details(request, dealer_id):
 #     ...
 
-# Add review
 # def add_review(request):
 #     ...

@@ -17,6 +17,7 @@ urlpatterns = [
     path('login/', TemplateView.as_view(template_name="index.html"), name='login_page'),
     # Registration endpoint
     path('register/', views.registration, name='register'),
+    path(route='get_cars', view=views.get_cars, name ='getcars'),
     # Placeholder for future endpoints
     # path('register/', views.registration, name='register'),
     # path('dealers/', views.get_dealerships, name='dealers'),
