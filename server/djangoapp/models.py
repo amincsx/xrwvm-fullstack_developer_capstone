@@ -22,7 +22,8 @@ class CarModel(models.Model):
     car_make = models.ForeignKey(CarMake, on_delete=models.CASCADE)
     
     name = models.CharField(max_length=100)
-    dealer_id = models.IntegerField()  # Refers to dealer created in Cloudant database
+    dealer_id = models.IntegerField(null=True, blank=True)  # allow nulls for now
+
 
     CAR_TYPES = [
         ('SEDAN', 'Sedan'),
