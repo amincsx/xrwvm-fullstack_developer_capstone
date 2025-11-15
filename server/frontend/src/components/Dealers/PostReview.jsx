@@ -23,67 +23,93 @@ const PostReview = () => {
   let carmodels_url = root_url+`djangoapp/get_cars`;
 
   const postreview = async ()=>{
-    let name = sessionStorage.getItem("firstname")+" "+sessionStorage.getItem("lastname");
-    //If the first and second name are stores as null, use the username
-    if(name.includes("null")) {
-      name = sessionStorage.getItem("username");
+    try {
+      let name = sessionStorage.getItem("firstname")+" "+sessionStorage.getItem("lastname");
+      //If the first and second name are stores as null, use the username
+      if(name.includes("null")) {
+        name = sessionStorage.getItem("username");
+      }
+      
+      console.log('PostReview - User:', name);
+      console.log('PostReview - Form data:', { model, review, date, year });
+      
+      if(!model || review === "" || date === "" || year === "" || model === "") {
+        alert("All details are mandatory")
+        return;
+      }
+
+      let model_split = model.split(" ");
+      let make_chosen = model_split[0];
+      let model_chosen = model_split[1];
+
+      let jsoninput = JSON.stringify({
+        "name": name,
+        "dealership": id,
+        "review": review,
+        "purchase": true,
+        "purchase_date": date,
+        "car_make": make_chosen,
+        "car_model": model_chosen,
+        "car_year": year,
+      });
+
+      console.log('PostReview - Sending data:', jsoninput);
+      
+      const res = await fetch(review_url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: jsoninput,
+      });
+
+      console.log('PostReview - Response status:', res.status);
+      const json = await res.json();
+      console.log('PostReview - Response data:', json);
+      
+      if (json.status === 200) {
+          alert("Review posted successfully!");
+          navigate(`/dealer/${id}`);
+      } else {
+          alert("Error posting review: " + (json.message || "Unknown error"));
+      }
+    } catch (error) {
+      console.error('Error in postreview:', error);
+      alert("Error posting review: " + error.message);
     }
-    if(!model || review === "" || date === "" || year === "" || model === "") {
-      alert("All details are mandatory")
-      return;
-    }
-
-    let model_split = model.split(" ");
-    let make_chosen = model_split[0];
-    let model_chosen = model_split[1];
-
-    let jsoninput = JSON.stringify({
-      "name": name,
-      "dealership": id,
-      "review": review,
-      "purchase": true,
-      "purchase_date": date,
-      "car_make": make_chosen,
-      "car_model": model_chosen,
-      "car_year": year,
-    });
-
-    console.log(jsoninput);
-    const res = await fetch(review_url, {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json",
-      },
-      body: jsoninput,
-  });
-
-  const json = await res.json();
-  if (json.status === 200) {
-      navigate(`/dealer/${id}`);
-  }
-
   }
   const get_dealer = async ()=>{
-    const res = await fetch(dealer_url, {
-      method: "GET"
-    });
-    const retobj = await res.json();
-    
-    if(retobj.status === 200) {
-      let dealerobjs = Array.from(retobj.dealer)
-      if(dealerobjs.length > 0)
-        setDealer(dealerobjs[0])
+    try {
+      const res = await fetch(dealer_url, {
+        method: "GET"
+      });
+      const retobj = await res.json();
+      console.log('PostReview - Dealer API response:', retobj);
+      
+      if(retobj.status === 200) {
+        // The API returns a single dealer object, not an array
+        setDealer(retobj.dealer)
+      }
+    } catch (error) {
+      console.error('Error fetching dealer for PostReview:', error);
     }
   }
 
   const get_cars = async ()=>{
-    const res = await fetch(carmodels_url, {
-      method: "GET"
-    });
-    const retobj = await res.json();
-    
-    let carmodelsarr = Array.from(retobj.CarModels)
-    setCarmodels(carmodelsarr)
+    try {
+      const res = await fetch(carmodels_url, {
+        method: "GET"
+      });
+      const retobj = await res.json();
+      console.log('PostReview - Cars API response:', retobj);
+      
+      if(retobj.CarModels) {
+        let carmodelsarr = Array.from(retobj.CarModels)
+        setCarmodels(carmodelsarr)
+      }
+    } catch (error) {
+      console.error('Error fetching cars for PostReview:', error);
+    }
   }
   useEffect(() => {
     get_dealer();
