@@ -13,27 +13,32 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Load JSON data
-const reviews_data = JSON.parse(fs.readFileSync("reviews.json", 'utf8'));
-const dealerships_data = JSON.parse(fs.readFileSync("dealerships.json", 'utf8'));
+const reviews_data = JSON.parse(fs.readFileSync("data/reviews.json", 'utf8'));
+const dealerships_data = JSON.parse(fs.readFileSync("data/dealerships.json", 'utf8'));
 
-// Connect to MongoDB
-mongoose.connect("mongodb://mongo_db:27017/", { dbName: 'dealershipsDB' });
-
-// Import Mongoose models
-const Reviews = require('./review');
-const Dealerships = require('./dealership');
-
-// Seed the database
-try {
-  Reviews.deleteMany({}).then(() => {
-    Reviews.insertMany(reviews_data['reviews']);
+// Connect to MongoDB with error handling
+mongoose.connect("mongodb://localhost:27017/", { dbName: 'dealershipsDB' })
+  .then(() => {
+    console.log('Connected to MongoDB');
+    // Import Mongoose models
+    const Reviews = require('./review');
+    const Dealerships = require('./dealership');
+    
+    // Seed the database
+    try {
+      Reviews.deleteMany({}).then(() => {
+        Reviews.insertMany(reviews_data['reviews']);
+      });
+      Dealerships.deleteMany({}).then(() => {
+        Dealerships.insertMany(dealerships_data['dealerships']);
+      });
+    } catch (error) {
+      console.error('Error seeding database:', error);
+    }
+  })
+  .catch((err) => {
+    console.log('MongoDB not available, using JSON data directly:', err.message);
   });
-  Dealerships.deleteMany({}).then(() => {
-    Dealerships.insertMany(dealerships_data['dealerships']);
-  });
-} catch (error) {
-  console.error('Error seeding database:', error);
-}
 
 // ----------------------
 // ROUTES
@@ -47,30 +52,35 @@ app.get('/', (req, res) => {
 // Fetch all reviews
 app.get('/fetchReviews', async (req, res) => {
   try {
+    const Reviews = require('./review');
     const documents = await Reviews.find();
     res.json(documents);
   } catch (error) {
-    res.status(500).json({ error: 'Error fetching reviews' });
+    res.json(reviews_data['reviews']);
   }
 });
 
 // Fetch reviews by dealer id
 app.get('/fetchReviews/dealer/:id', async (req, res) => {
   try {
+    const Reviews = require('./review');
     const documents = await Reviews.find({ dealership: req.params.id });
     res.json(documents);
   } catch (error) {
-    res.status(500).json({ error: 'Error fetching reviews' });
+    const filtered = reviews_data['reviews'].filter(r => r.dealership == req.params.id);
+    res.json(filtered);
   }
 });
 
 // Fetch all dealerships
 app.get('/fetchDealers', async (req, res) => {
   try {
+    const Dealerships = require('./dealership');
     const dealerships = await Dealerships.find();
     res.json(dealerships);
   } catch (error) {
-    res.status(500).json({ error: 'Error fetching dealerships' });
+    // Fallback to JSON data if MongoDB is not available
+    res.json(dealerships_data['dealerships']);
   }
 });
 
@@ -78,24 +88,33 @@ app.get('/fetchDealers', async (req, res) => {
 app.get('/fetchDealers/:state', async (req, res) => {
   try {
     const state = req.params.state;
+    const Dealerships = require('./dealership');
     const dealerships = await Dealerships.find({ state: state });
     res.json(dealerships);
   } catch (error) {
-    res.status(500).json({ error: 'Error fetching dealerships by state' });
+    // Fallback to JSON data if MongoDB is not available
+    const filtered = dealerships_data['dealerships'].filter(d => d.state === req.params.state);
+    res.json(filtered);
   }
 });
 
 // Fetch dealer by id
 app.get('/fetchDealer/:id', async (req, res) => {
   try {
-    const id = parseInt(req.params.id); // assuming `id` is a number
+    const id = parseInt(req.params.id);
+    const Dealerships = require('./dealership');
     const dealership = await Dealerships.findOne({ id: id });
     if (!dealership) {
       return res.status(404).json({ error: 'Dealer not found' });
     }
     res.json(dealership);
   } catch (error) {
-    res.status(500).json({ error: 'Error fetching dealer' });
+    const dealer = dealerships_data['dealerships'].find(d => d.id == req.params.id);
+    if (dealer) {
+      res.json(dealer);
+    } else {
+      res.status(404).json({ error: 'Dealer not found' });
+    }
   }
 });
 
