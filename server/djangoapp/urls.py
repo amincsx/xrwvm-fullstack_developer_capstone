@@ -18,7 +18,7 @@ urlpatterns = [
     # Registration endpoint
     path('register/', views.registration, name='register'),
     path(route='get_cars', view=views.get_cars, name ='getcars'),
-    path(route='get_dealers', view=views.get_dealerships, name='get_dealers'),
+    path(route='get_dealers/', view=views.get_dealerships, name='get_dealers'),
     path(route='get_dealers/<str:state>', view=views.get_dealerships, name='get_dealers_by_state'),
     # Placeholder for future endpoints
     path(route='dealer/<int:dealer_id>', view=views.get_dealer_details, name='dealer_details'),

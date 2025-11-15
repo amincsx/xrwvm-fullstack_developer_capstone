@@ -23,7 +23,7 @@ mongoose.connect("mongodb://localhost:27017/", { dbName: 'dealershipsDB' })
     // Import Mongoose models
     const Reviews = require('./review');
     const Dealerships = require('./dealership');
-    
+
     // Seed the database
     try {
       Reviews.deleteMany({}).then(() => {
