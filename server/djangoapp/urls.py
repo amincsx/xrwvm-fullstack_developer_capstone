@@ -16,7 +16,7 @@ urlpatterns = [
     # Render the login page template (GET request)
     path('login/', TemplateView.as_view(template_name="index.html"), name='login_page'),
     # Registration endpoint
-    path('register/', views.registration, name='register'),
+    path(route='register', view=views.registration, name='register'),
     path(route='get_cars', view=views.get_cars, name ='getcars'),
     path(route='get_dealers/', view=views.get_dealerships, name='get_dealers'),
     path(route='get_dealers/<str:state>', view=views.get_dealerships, name='get_dealers_by_state'),
